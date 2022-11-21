@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Service
+metadata:  
+  name: ejerkube
+spec:
+  selector:    
+    app: ejerkube
+  type: LoadBalancer
+  ports:  
+  - port: 80
+    targetPort: 5000
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ejerkube
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ejerkube
+  template:
+    metadata:
+      labels:
+        app: ejerkube
+    spec:
+      containers:
+      - name: ejerkube
+        image: nahuic/ejerkube:1.0
+        ports:
+        - containerPort: 5000
+        env:
+        - name: PORT
+          value: "5000"
